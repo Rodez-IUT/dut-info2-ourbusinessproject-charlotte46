@@ -1,8 +1,14 @@
 package ourbusinessproject;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
+@Entity
 public class Project {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @NotEmpty
     private String title;
