@@ -7,8 +7,8 @@ import javax.validation.constraints.NotEmpty;
 public class Project {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GeneratedValue
+    private Long id;
 
     @NotEmpty
     private String title;
@@ -29,5 +29,9 @@ public class Project {
 
     public String getTitle() {
         return title;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
