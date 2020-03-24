@@ -47,6 +47,9 @@ public class Project {
 
     public void setEnterprise(Enterprise enterprise) {
         this.enterprise = enterprise;
-        enterprise.setProjects(List.of(this));
+
+        if (enterprise != null) {
+            enterprise.setProjects(List.of(this));
+        }
     }
 }
