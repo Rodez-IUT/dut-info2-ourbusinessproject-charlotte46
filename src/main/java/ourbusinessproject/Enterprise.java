@@ -28,6 +28,7 @@ public class Enterprise {
     @NotEmpty @Email
     private String contactEmail;
 
+    /** Liste des projets */
     private List<Project> projects;
 
     public String getName() {
