@@ -2,6 +2,7 @@ package ourbusinessproject;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Project {
@@ -14,6 +15,9 @@ public class Project {
     private String title;
 
     private String description;
+
+    @NotNull
+    private Enterprise enterprise;
 
     public void setDescription(String description) {
         this.description = description;
@@ -33,5 +37,13 @@ public class Project {
 
     public Long getId() {
         return id;
+    }
+
+    public Enterprise getEnterprise() {
+        return enterprise;
+    }
+
+    public void setEnterprise(Enterprise enterprise) {
+        this.enterprise = enterprise;
     }
 }
