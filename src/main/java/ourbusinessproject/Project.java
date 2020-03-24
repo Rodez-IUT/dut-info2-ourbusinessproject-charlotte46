@@ -17,6 +17,7 @@ public class Project {
     private String description;
 
     @NotNull
+    @ManyToOne
     private Enterprise enterprise;
 
     public void setDescription(String description) {
