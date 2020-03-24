@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 public class Enterprise {
@@ -26,6 +27,8 @@ public class Enterprise {
 
     @NotEmpty @Email
     private String contactEmail;
+
+    private List<Project> projects;
 
     public String getName() {
         return name;
@@ -61,5 +64,13 @@ public class Enterprise {
 
     public Long getId() {
         return id;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 }
