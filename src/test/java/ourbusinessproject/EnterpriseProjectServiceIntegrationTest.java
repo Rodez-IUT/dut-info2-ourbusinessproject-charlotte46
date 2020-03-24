@@ -4,21 +4,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.stereotype.Service;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
 
 
+import java.util.List;
+
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
-
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -34,11 +30,6 @@ public class EnterpriseProjectServiceIntegrationTest {
     @Before
     public void setUp() {
 
-        // given a a valid project
-        project = new Project();
-        project.setTitle("A project");
-        project.setDescription("Project description");
-
         // given a a valid Enterprise
         enterprise = new Enterprise();
         enterprise.setName("MyComp");
@@ -46,10 +37,15 @@ public class EnterpriseProjectServiceIntegrationTest {
         enterprise.setContactEmail("comp@com.com");
         enterprise.setContactName("comp contact name");
 
+        // given a a valid project
+        project = new Project();
+        project.setTitle("A project");
+        project.setDescription("Project description");
+        project.setEnterprise(enterprise);
     }
 
     @Test
-    public void testSaveValidProject() {
+    public void testSaveValidProjectWithNewEnterprise() {
 
         // given a a valid project
 
@@ -58,6 +54,30 @@ public class EnterpriseProjectServiceIntegrationTest {
 
         // expect the project is saved with a generated id
         assertThat(project.getId(), is(notNullValue()));
+
+        // expect its enterprise is saved too
+        assertThat(project.getEnterprise().getId(), is(notNullValue()));
+
+        // expect the enterprise has the project referenced in its collection of projects
+        assertThat(enterprise.getProjects(), hasItem(project));
+
+    }
+
+    @Test
+    public void testSaveValidProjectWithAlreadySavedEnterprise() {
+
+        // given a a valid project and an already saved enterprise
+        enterpriseProjectService.save(enterprise);
+
+        // when saving the project
+        enterpriseProjectService.save(project);
+
+        // expect the project is saved with a generated id
+        assertThat(project.getId(), is(notNullValue()));
+
+        // expect the enterprise has the project referenced in its collection of projects
+        assertThat(enterprise.getProjects(), hasItem(project));
+
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -109,7 +129,6 @@ public class EnterpriseProjectServiceIntegrationTest {
 
         // when an existing  project is searched by id
         Project fetchedProject = enterpriseProjectService.findProjectById(project.getId());
-
 
         // then the fetched project is correctly instanced
         assertThat(fetchedProject.getTitle(), is(project.getTitle()));

@@ -26,7 +26,7 @@ public class Enterprise {
     private String contactEmail;
 
     /** Liste des projets */
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Project> projects;
 
     public String getName() {

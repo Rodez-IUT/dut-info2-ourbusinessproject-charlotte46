@@ -3,6 +3,7 @@ package ourbusinessproject;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 public class Project {
@@ -17,7 +18,7 @@ public class Project {
     private String description;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Enterprise enterprise;
 
     public void setDescription(String description) {
@@ -46,5 +47,6 @@ public class Project {
 
     public void setEnterprise(Enterprise enterprise) {
         this.enterprise = enterprise;
+        enterprise.setProjects(List.of(this));
     }
 }
