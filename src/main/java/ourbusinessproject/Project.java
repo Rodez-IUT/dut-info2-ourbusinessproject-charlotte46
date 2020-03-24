@@ -52,4 +52,16 @@ public class Project {
             enterprise.setProjects(List.of(this));
         }
     }
+
+    public Project() {
+        this.title = "";
+        this.description = "";
+        this.enterprise = new Enterprise();
+    }
+
+    public Project(String title, String description, Enterprise enterprise) {
+        this.title = title;
+        this.description = description;
+        this.enterprise = enterprise;
+    }
 }

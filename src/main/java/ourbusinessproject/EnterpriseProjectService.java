@@ -1,10 +1,11 @@
 package ourbusinessproject;
 
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class EnterpriseProjectService {
@@ -31,5 +32,12 @@ public class EnterpriseProjectService {
 
     public Enterprise findEnterpriseById(Long idEnterprise) {
         return entityManager.find(Enterprise.class, idEnterprise);
+    }
+
+    public List<Project> findAllProjects() {
+        String sql = "SELECT p FROM Project";
+        TypedQuery<Project> projects =
+                entityManager.createQuery(sql, Project.class);
+        return projects.getResultList();
     }
 }
