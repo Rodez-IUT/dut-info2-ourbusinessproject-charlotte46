@@ -42,4 +42,5 @@ public class EnterpriseProjectService {
                 entityManager.createQuery(sql, Project.class);
         return projects.getResultList();
     }
+
 }

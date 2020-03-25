@@ -64,4 +64,11 @@ public class Project {
         this.description = description;
         this.enterprise = enterprise;
     }
+
+    @Override
+    public String toString(){
+        return "Projet " + this.title + ": "
+                + "<br/>Description : " + this.description
+                + "<br/>Entreprise : " + this.enterprise.getName();
+    }
 }
