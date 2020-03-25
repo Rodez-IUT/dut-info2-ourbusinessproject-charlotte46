@@ -4,10 +4,12 @@ import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class EnterpriseProjectService {
 
     @PersistenceContext
@@ -35,7 +37,7 @@ public class EnterpriseProjectService {
     }
 
     public List<Project> findAllProjects() {
-        String sql = "SELECT p FROM Project";
+        String sql = "SELECT p FROM Project p ORDER BY p.title";
         TypedQuery<Project> projects =
                 entityManager.createQuery(sql, Project.class);
         return projects.getResultList();

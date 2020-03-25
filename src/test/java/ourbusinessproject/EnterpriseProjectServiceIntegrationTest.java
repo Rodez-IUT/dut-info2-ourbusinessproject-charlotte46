@@ -24,6 +24,8 @@ public class EnterpriseProjectServiceIntegrationTest {
     @Autowired
     private EnterpriseProjectService enterpriseProjectService;
 
+    @Autowired private Bootstrap bootstrap;
+
     private Project project;
     private Enterprise enterprise;
 
@@ -42,6 +44,7 @@ public class EnterpriseProjectServiceIntegrationTest {
         project.setTitle("A project");
         project.setDescription("Project description");
         project.setEnterprise(enterprise);
+
     }
 
     @Test
@@ -140,7 +143,7 @@ public class EnterpriseProjectServiceIntegrationTest {
     public void testFindNonExistingProjectById() {
 
         // when a non existing  project is searched by id
-        Project fetchedProject = enterpriseProjectService.findProjectById(1L);
+        Project fetchedProject = enterpriseProjectService.findProjectById(10L);
 
         // then the fetched project is null
         assertThat(fetchedProject, is(nullValue()));
@@ -167,10 +170,55 @@ public class EnterpriseProjectServiceIntegrationTest {
     public void testFindNonExistingEnterpriseById() {
 
         // when a non existing  project is searched by id
-        Enterprise fetchedEnterprise = enterpriseProjectService.findEnterpriseById(1L);
+        Enterprise fetchedEnterprise = enterpriseProjectService.findEnterpriseById(10L);
 
         // then the fetched project is null
         assertThat(fetchedEnterprise, is(nullValue()));
+
+    }
+
+    @Test
+    public void testFindAllProjects() {
+        // given an enterprise
+
+        // and three persisted projects
+        enterpriseProjectService.save(new Project("cp3", "p3 description", enterprise));
+        enterpriseProjectService.save(new Project("bp2", "p2 description", enterprise));
+        enterpriseProjectService.save(project);
+
+        // when searching for all projects
+        List<Project> projects = enterpriseProjectService.findAllProjects();
+
+        // then the three projects are fetched
+        assertThat(projects.size(), is(6)); // 3 + 3 from bootstrap
+
+        // and projects are sorted by title
+        assertThat(projects.get(0), is(project));
+        assertThat(projects.get(1).getTitle(), is("bp2"));
+        assertThat(projects.get(2).getTitle(), is("cp3"));
+
+    }
+
+    @Test
+    public void testFindAllProjectsFromInitialization() {
+        // Given the initialization service of the bootstrap component
+        InitializationService initializationService = bootstrap.getInitializationService();
+
+        // when searching for all projects
+        List<Project> projects = enterpriseProjectService.findAllProjects();
+
+        // then three projects are fetched
+        assertThat(projects.size(), is(3));
+
+        // and projects are sorted by title
+        assertThat(projects.get(0).getTitle(), is(initializationService.getProject1E1().getTitle()));
+        assertThat(projects.get(1).getTitle(), is(initializationService.getProject1E2().getTitle()));
+        assertThat(projects.get(2).getTitle(), is(initializationService.getProject2E1().getTitle()));
+
+        // and projects have the good enterprise affected
+        assertThat(projects.get(0).getEnterprise().getName(), is(initializationService.getEnterprise1().getName()));
+        assertThat(projects.get(1).getEnterprise().getName(), is(initializationService.getEnterprise2().getName()));
+        assertThat(projects.get(2).getEnterprise().getName(), is(initializationService.getEnterprise1().getName()));
 
     }
 
