@@ -66,7 +66,7 @@ public class Project {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "Projet " + this.title + ": "
                 + "<br/>Description : " + this.description
                 + "<br/>Entreprise : " + this.enterprise.getName();

@@ -34,6 +34,10 @@ public class InitializationService {
         enterprise2.setContactName("Enterprise 2 Contact");
         enterprise2.setContactEmail("enterprise2@mail.com");
 
+        // si on ne respecte pas les règles des annotations
+        // lors de la construction d'un objet
+        // vu que la méthode est faite par transaction
+        // s'il existe une erreur aucun objet n'est créé
         project1E1 = new Project("project1E1", "project1E1 description", enterprise1);
         project1E2 = new Project("project1E2", "project1E2 description", enterprise2);
         project2E1 = new Project("project2E1", "project2E1 description", enterprise1);

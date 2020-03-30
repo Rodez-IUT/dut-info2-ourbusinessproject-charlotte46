@@ -1,5 +1,7 @@
 package ourbusinessproject;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -65,6 +67,7 @@ public class Enterprise {
         return id;
     }
 
+    @JsonIgnore
     public List<Project> getProjects() {
         return projects;
     }

@@ -21,15 +21,7 @@ public class ProjectController {
     @JsonIgnore
     @RequestMapping("/projectsWithEnterprises")
     @ResponseBody
-    public String findAllProjectsWithEnterprises() {
-        List<Project> projects = enterpriseProjectService.findAllProjects();
-
-        StringBuilder response = new StringBuilder();
-
-        for (Project project: projects) {
-            response.append("<br/>"+ project.toString() + "<br/>");
-        }
-
-        return response.toString();
+    public List<Project> findAllProjectsWithEnterprises() {
+        return enterpriseProjectService.findAllProjects();
     }
 }
