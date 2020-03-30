@@ -1,0 +1,21 @@
+Combien de requêtes sont générées lors de l'affichage de tous les projets ?
+Des requêtes vous paraissent-elles « inutiles » ?
+Pouvez vous expliquer leur présence.
+
+Il y a trois requêtes générées :
+
+1) Requête de sélection de tous les projets
+select project0_.id as id1_2_, project0_.description as descript2_2_, project0_.enterprise_id as enterpri4_2_,
+project0_.title as title3_2_ from project project0_ order by project0_.title
+
+2) Requête filtrée d'entreprise => En double
+select enterprise0_.id as id1_0_0_, enterprise0_.contact_email as contact_2_0_0_,
+enterprise0_.contact_name as contact_3_0_0_, enterprise0_.description as descript4_0_0_,
+enterprise0_.name as name5_0_0_ from enterprise enterprise0_ where enterprise0_.id=?
+
+3) Requête filtrée d'entreprise => En double
+select enterprise0_.id as id1_0_0_, enterprise0_.contact_email as contact_2_0_0_,
+enterprise0_.contact_name as contact_3_0_0_, enterprise0_.description as descript4_0_0_,
+enterprise0_.name as name5_0_0_ from enterprise enterprise0_ where enterprise0_.id=?
+
+Les requêtes 2 et 3 sont présentes car lorsqu'un projet à une entreprise, on cherche cette entreprise.
