@@ -25,7 +25,7 @@ public class Project {
     public Project() {
         this.title = "";
         this.description = "";
-        this.enterprise = new Enterprise();
+        this.setEnterprise(new Enterprise());
     }
 
     public Project(String title, String description, Enterprise enterprise) {
@@ -60,9 +60,7 @@ public class Project {
 
     public void setEnterprise(Enterprise enterprise) {
         if (this.enterprise != null) {
-            if (this.enterprise.getProjects() != null){
                 this.enterprise.getProjects().remove(this);
-            }
         }
         this.enterprise = enterprise;
         if (this.enterprise != null) {
