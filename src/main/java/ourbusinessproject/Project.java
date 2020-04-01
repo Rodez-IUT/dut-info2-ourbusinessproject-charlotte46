@@ -3,13 +3,14 @@ package ourbusinessproject;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Project {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty
@@ -18,8 +19,20 @@ public class Project {
     private String description;
 
     @NotNull
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Enterprise enterprise;
+
+    public Project() {
+        this.title = "";
+        this.description = "";
+        this.enterprise = new Enterprise();
+    }
+
+    public Project(String title, String description, Enterprise enterprise) {
+        this.title = title;
+        this.description = description;
+        this.enterprise = enterprise;
+    }
 
     public void setDescription(String description) {
         this.description = description;
@@ -46,29 +59,17 @@ public class Project {
     }
 
     public void setEnterprise(Enterprise enterprise) {
-        this.enterprise = enterprise;
-
-        if (enterprise != null) {
-            enterprise.setProjects(List.of(this));
+        if (this.enterprise != null) {
+            if (this.enterprise.getProjects() != null){
+                this.enterprise.getProjects().remove(this);
+            }
         }
-    }
-
-    public Project() {
-        this.title = "";
-        this.description = "";
-        this.enterprise = new Enterprise();
-    }
-
-    public Project(String title, String description, Enterprise enterprise) {
-        this.title = title;
-        this.description = description;
         this.enterprise = enterprise;
-    }
-
-    @Override
-    public String toString() {
-        return "Projet " + this.title + ": "
-                + "<br/>Description : " + this.description
-                + "<br/>Entreprise : " + this.enterprise.getName();
+        if (this.enterprise != null) {
+            if (this.enterprise.getProjects() == null) {
+                this.enterprise.setProjects(new ArrayList<>());
+            }
+            this.enterprise.getProjects().add(this);
+        }
     }
 }

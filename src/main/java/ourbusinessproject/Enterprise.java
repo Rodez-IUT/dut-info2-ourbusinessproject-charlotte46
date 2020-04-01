@@ -6,13 +6,15 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 public class Enterprise {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty
@@ -28,8 +30,8 @@ public class Enterprise {
     private String contactEmail;
 
     /** Liste des projets */
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Project> projects;
+    @OneToMany(mappedBy = "enterprise")
+    private Collection<Project> projects;
 
     public String getName() {
         return name;
@@ -68,11 +70,11 @@ public class Enterprise {
     }
 
     @JsonIgnore
-    public List<Project> getProjects() {
+    public Collection<Project> getProjects() {
         return projects;
     }
 
-    public void setProjects(List<Project> projects) {
+    public void setProjects(Collection<Project> projects) {
         this.projects = projects;
     }
 }

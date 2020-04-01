@@ -20,30 +20,53 @@ public class InitializationService {
     private Enterprise enterprise1;
     private Enterprise enterprise2;
 
+    public InitializationService(@Autowired EnterpriseProjectService enterpriseProjectService){
+        this.enterpriseProjectService = enterpriseProjectService;
+    }
+
     @Transactional
     public void initProjects() {
-        enterprise1 = new Enterprise();
-        enterprise1.setName("Enterprise 1");
-        enterprise1.setDescription("Enterprise 1 description");
-        enterprise1.setContactName("Enterprise 1 Contact");
-        enterprise1.setContactEmail("enterprise1@mail.com");
 
-        enterprise2 = new Enterprise();
-        enterprise2.setName("Enterprise 2");
-        enterprise2.setDescription("Enterprise 2 description");
-        enterprise2.setContactName("Enterprise 2 Contact");
-        enterprise2.setContactEmail("enterprise2@mail.com");
+        initEnterprise1();
+        initEnterprise2();
 
         // si on ne respecte pas les règles des annotations
         // lors de la construction d'un objet
         // vu que la méthode est faite par transaction
         // s'il existe une erreur aucun objet n'est créé
-        project1E1 = new Project("project1E1", "project1E1 description", enterprise1);
-        project1E2 = new Project("project1E2", "project1E2 description", enterprise2);
-        project2E1 = new Project("project2E1", "project2E1 description", enterprise1);
+        initAndSaveProject1E1();
+        initAndSaveProject1E2();
+        initAndSaveProject2E1();
+    }
 
+    private void initEnterprise1(){
+        enterprise1 = new Enterprise();
+        enterprise1.setName("Enterprise 1");
+        enterprise1.setDescription("Enterprise 1 description");
+        enterprise1.setContactName("Enterprise 1 Contact");
+        enterprise1.setContactEmail("enterprise1@mail.com");
+    }
+
+    private void initEnterprise2() {
+        enterprise2 = new Enterprise();
+        enterprise2.setName("Enterprise 2");
+        enterprise2.setDescription("Enterprise 2 description");
+        enterprise2.setContactName("Enterprise 2 Contact");
+        enterprise2.setContactEmail("enterprise2@mail.com");
+    }
+
+    private void initAndSaveProject1E1() {
+        project1E1 = new Project("project1E1", "project1E1 description", enterprise1);
         enterpriseProjectService.save(project1E1);
+    }
+
+    private void initAndSaveProject1E2() {
+        project1E2 = new Project("project1E2", "project1E2 description", enterprise2);
         enterpriseProjectService.save(project1E2);
+    }
+
+    private void initAndSaveProject2E1() {
+        project2E1 = new Project("project2E1", "project2E1 description", enterprise1);
         enterpriseProjectService.save(project2E1);
     }
 

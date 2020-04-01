@@ -23,10 +23,17 @@ public class EnterpriseProjectService {
         this.entityManager = entityManager;
     }
 
-    public void save(Object entity) {
-        entityManager.persist(entity);
+    public void save(Project project) {
+        entityManager.persist(project.getEnterprise());
+        entityManager.persist(project);
         entityManager.flush();
     }
+
+    public void save(Enterprise enterprise) {
+        entityManager.persist(enterprise);
+        entityManager.flush();
+    }
+
 
     public Project findProjectById(Long idProject) {
         return entityManager.find(Project.class, idProject);
@@ -38,7 +45,7 @@ public class EnterpriseProjectService {
 
     public List<Project> findAllProjects() {
 
-        String getProjectEnterprise = "SELECT p FROM Project p JOIN FETCH p.enterprise ORDER BY p.id";
+        String getProjectEnterprise = "SELECT p FROM Project p JOIN FETCH p.enterprise ORDER BY p.title";
 
         TypedQuery<Project> projects =
                 entityManager.createQuery(getProjectEnterprise, Project.class);
