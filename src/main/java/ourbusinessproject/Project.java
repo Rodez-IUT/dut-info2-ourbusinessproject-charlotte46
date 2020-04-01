@@ -22,11 +22,7 @@ public class Project {
     @ManyToOne
     private Enterprise enterprise;
 
-    public Project() {
-        this.title = "";
-        this.description = "";
-        this.setEnterprise(new Enterprise());
-    }
+    public Project() {}
 
     public Project(String title, String description, Enterprise enterprise) {
         this.title = title;
